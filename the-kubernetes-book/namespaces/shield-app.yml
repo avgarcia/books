@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: default
+  namespace: shield
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: the-bus
+  namespace: shield
+spec:
+  type: NodePort
+  ports:
+    - nodePort: 31112
+      port: 8080
+      targetPort: 8080
+  selector:
+    env: marvel
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: triskelion
+  namespace: shield
+  labels:
+    env: marvel
+spec:
+  containers:
+    - name: bus-ctr
+      image: nigelpoulton/k8sbook:shield-01
+      ports:
+        - containerPort: 8080
+      imagePullPolicy: Always
