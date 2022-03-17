@@ -1,47 +1,36 @@
 package com.codecriticon.javatokotlin.classes
 
-public class EmailAddress {
+import java.util.*
 
-    private final String localPart;
+class EmailAddress(
+    val localPart: String,
+    val domain: String
+) {
 
-    private final String domain;
-
-    public static EmailAddress parse(String value) {
-        var atIndex = value.lastIndexOf('@');
-        if (atIndex < 1 || atIndex == value.length() - 1)
-            throw new IllegalArgumentException ("EmailAddress must be two parts separated by @");
-        return new EmailAddress (value.substring(0, atIndex), value.substring(atIndex+1));
+    companion object {
+        @JvmStatic
+        fun parse(value: String): EmailAddress {
+            val atIndex = value.lastIndexOf('@')
+            require(!(atIndex < 1 || atIndex == value.length - 1)) {
+                "EmailAddress must be two parts separated by @"
+            }
+            return EmailAddress(value.substring(0, atIndex), value.substring(atIndex + 1))
+        }
     }
 
-    public EmailAddress(String localPart, String domain) {
-        this.localPart = localPart;
-        this.domain = domain;
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || javaClass != other.javaClass) return false
+        val that = other as EmailAddress
+        return localPart == that.localPart && domain == that.domain
     }
 
-    public String getLocalPart() {
-        return localPart;
+    override fun hashCode(): Int {
+        return Objects.hash(localPart, domain)
     }
 
-    public String getDomain() {
-        return domain;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        EmailAddress that =(EmailAddress) o;
-        return localPart.equals(that.localPart) && domain.equals(that.domain);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(localPart, domain);
-    }
-
-    @Override
-    public String toString() {
-        return localPart + "@" + domain;
+    override fun toString(): String {
+        return "$localPart@$domain"
     }
 
 }
