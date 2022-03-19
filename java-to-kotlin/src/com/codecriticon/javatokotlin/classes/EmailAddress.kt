@@ -2,7 +2,7 @@ package com.codecriticon.javatokotlin.classes
 
 import java.util.*
 
-class EmailAddress(
+data class EmailAddress(
     val localPart: String,
     val domain: String
 ) {
@@ -16,17 +16,6 @@ class EmailAddress(
             }
             return EmailAddress(value.substring(0, atIndex), value.substring(atIndex + 1))
         }
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || javaClass != other.javaClass) return false
-        val that = other as EmailAddress
-        return localPart == that.localPart && domain == that.domain
-    }
-
-    override fun hashCode(): Int {
-        return Objects.hash(localPart, domain)
     }
 
     override fun toString(): String {
