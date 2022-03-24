@@ -1,9 +1,9 @@
 package com.codecriticon.javatokotlin.nullable
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 import java.time.Duration
-import java.util.*
 
 class LongestLegOverTests {
 
@@ -16,36 +16,28 @@ class LongestLegOverTests {
     private val oneDay: Duration = Duration.ofDays(1)
 
     @Test
-    fun is_absent_when_no_legs() {
-        assertEquals(
-            Optional.empty<Any>(),
-            Legs.findLongestLegOver(emptyList(), Duration.ZERO)
-        )
+    fun `is absent when no legs`() {
+        assertNull(Legs.longestLegOver(emptyList(), Duration.ZERO))
     }
 
     @Test
-    fun is_absent_when_no_legs_long_enough() {
-        assertEquals(
-            Optional.empty<Any>(),
-            Legs.findLongestLegOver(legs, oneDay)
-        )
+    fun `is absent when no legs long enough`() {
+        assertNull(Legs.longestLegOver(legs, oneDay))
     }
 
     @Test
-    fun is_longest_leg_when_one_match() {
+    fun `is longest leg when one match`() {
         assertEquals(
             "one day",
-            Legs.findLongestLegOver(legs, oneDay.minusMillis(1))
-                .orElseThrow().description
+            Legs.longestLegOver(legs, oneDay.minusMillis(1))?.description
         )
     }
 
     @Test
-    fun is_longest_leg_when_more_than_one_match() {
+    fun `is longest leg when more than one match`() {
         assertEquals(
             "one day",
-            Legs.findLongestLegOver(legs, Duration.ofMinutes(59))
-                .orElseThrow().description
+            Legs.longestLegOver(legs, Duration.ofMinutes(59))?.description
         )
     }
 
