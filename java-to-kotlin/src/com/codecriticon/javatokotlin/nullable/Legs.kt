@@ -11,21 +11,17 @@ object Legs {
         legs: List<Leg>,
         duration: Duration
     ): Optional<Leg> {
-        return Optional.ofNullable(longestLegOver(legs, duration))
+        return Optional.ofNullable(legs.longestLegOver(duration))
     }
 
-    fun longestLegOver(legs: List<Leg>, duration: Duration): Leg? {
-        var result: Leg? = null
-        for (leg in legs) {
-            if (isLongerThan(leg, duration) && (result == null || isLongerThan(leg, result.plannedDuration))) {
-                result = leg
-            }
+    fun List<Leg>.longestLegOver(duration: Duration): Leg? =
+        maxByOrNull {
+            it.plannedDuration
+        }?.takeIf { longestLeg ->
+            longestLeg.isLongerThan(duration)
         }
-        return result
-    }
 
-    private fun isLongerThan(leg: Leg, duration: Duration): Boolean {
-        return leg.plannedDuration.compareTo(duration) > 0
-    }
+
+    private fun Leg.isLongerThan(duration: Duration) = plannedDuration > duration
 
 }

@@ -1,5 +1,6 @@
 package com.codecriticon.javatokotlin.nullable
 
+import com.codecriticon.javatokotlin.nullable.Legs.longestLegOver
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
@@ -17,19 +18,19 @@ class LongestLegOverTests {
 
     @Test
     fun `is absent when no legs`() {
-        assertNull(Legs.longestLegOver(emptyList(), Duration.ZERO))
+        assertNull(emptyList<Leg>().longestLegOver(Duration.ZERO))
     }
 
     @Test
     fun `is absent when no legs long enough`() {
-        assertNull(Legs.longestLegOver(legs, oneDay))
+        assertNull(legs.longestLegOver(oneDay))
     }
 
     @Test
     fun `is longest leg when one match`() {
         assertEquals(
             "one day",
-            Legs.longestLegOver(legs, oneDay.minusMillis(1))?.description
+            legs.longestLegOver(oneDay.minusMillis(1))?.description
         )
     }
 
@@ -37,7 +38,7 @@ class LongestLegOverTests {
     fun `is longest leg when more than one match`() {
         assertEquals(
             "one day",
-            Legs.longestLegOver(legs, Duration.ofMinutes(59))?.description
+            legs.longestLegOver(Duration.ofMinutes(59))?.description
         )
     }
 
