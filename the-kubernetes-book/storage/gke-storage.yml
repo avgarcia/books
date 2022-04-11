@@ -1,0 +1,37 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: fast
+provisioner: pd.csi.storage.gke.io
+parameters:
+  type: pd-ssd
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mypvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: fast
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod
+spec:
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: mypvc
+  containers:
+    - name: ubuntu-ctr
+      image: ubuntu:latest
+      volumeMounts:
+        - mountPath: /data
+          name: data
