@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: tkb-sts
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web
+  serviceName: "dullahan"
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: ctr-web
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+              name: web
+          volumeMounts:
+            - mountPath: /usr/share/nginx/htm
+              name: webroot
+  volumeClaimTemplates:
+    - metadata:
+        name: webroot
+    - spec:
+        accessModes: "ReadWriteOnce"
+        storageClassName: "flash"
+        resources:
+          requests:
+            storage: 1Gi
