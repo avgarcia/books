@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    chapter: config-maps
+  name: enviroment-variable
+spec:
+  containers:
+    - name: ctrl
+      image: busybox
+      command:
+        - "sleep"
+      args:
+        - "infinity"
+      env:
+        - name: FIRSTNAME
+          valueFrom:
+            configMapKeyRef:
+              key: given
+              name: multimap
+        - name: LastName
+          valueFrom:
+            configMapKeyRef:
+              key: family
+              name: multimap

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cmvolume
+  labels:
+    chapter: config-maps
+spec:
+  containers:
+    - name: ctrl
+      image: nginx
+      volumeMounts:
+        - mountPath: /etc/name
+          name: volmap
+  volumes:
+    - name: volmap
+      configMap:
+        name: multimap
